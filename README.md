@@ -1,1 +1,1 @@
-# MaxitWithAI
+# Crossword Puzzle Generator
