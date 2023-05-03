@@ -16,6 +16,8 @@ with open("api_key.txt") as file:
 
 openai.api_key = api_key
 
+words = {}
+
 for i in range(n):
     prompt = f"generate one word"
 
@@ -30,7 +32,8 @@ for i in range(n):
     )
 
     raw_answer = str(response["choices"][0]["text"])
-    print(raw_answer[2:])
-    with open("words.txt", "a", newline="") as file:
-        raw_answer = raw_answer.replace('\n','') 
-        file.write(raw_answer + '\n')
+    raw_answer = raw_answer.replace('\n','')
+    words[raw_answer] = ""
+
+with open("crossword.json", "w") as file:
+    json.dump(words, file)
