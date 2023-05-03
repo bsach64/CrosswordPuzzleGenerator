@@ -1,16 +1,14 @@
 import json
 
-Intro = "Enter the list of words and press ctrl+D to stop."
-print(Intro)
 
-words = {}
+def input_words():
+    words = input("Enter the list of words separated by spaces: ")
+    words = words.split(" ")
 
-while True:
-    try:
-        words[input("Word: ")] = ""
-    except EOFError:
-        print()
-        break
+    crossword = {}
 
-with open("crossword.json", "w") as file:
-    json.dump(words, file)
+    for word in words:
+        crossword[word] = ""
+
+    with open("crossword.json", "w") as file:
+        json.dump(words, file)
