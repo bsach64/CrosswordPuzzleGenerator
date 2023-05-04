@@ -24,6 +24,13 @@ def main_screen():
     c=input("Do you want move further with the words and generate hints? (y/n)")
     if c=="y" or c == "Y":
         generate.generate_hints()
+        os.system('cls')
+        print_hints()
+
+
+        #generate_grid()
+
+
     else:
         main_screen()
 
@@ -38,7 +45,8 @@ def print_words():
 def print_hints():
     with open("crossword.json") as file:
         crossword = json.load(file)
-    print(crossword)
+    for key, value in crossword.items():
+        print(key, ' : ', value)
 
 def main():
     main_screen()
