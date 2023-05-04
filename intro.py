@@ -14,15 +14,22 @@ def main_screen():
         2> Input words manually
 
         """)
-    c=int(input("\tEnter your choice: "))
-
-    if c==1:
+    while True:
+        try:
+            choice =int(input("\tEnter your choice: "))
+            if choice > 2 or choice < 0:
+                print("\tNot in Range")
+            else:
+                break
+        except ValueError:
+            print("Enter a valid Integer")
+    if choice == 1:
         generate.generate_words()
-    elif c==2:
+    elif choice == 2:
         words.input_words()
     print_words()
-    c=input("Do you want move further with the words and generate hints? (y/n)")
-    if c=="y" or c == "Y":
+    choice = input("Do you want move further with the words and generate hints? (y/n)")
+    if choice == "y" or choice == "Y":
         generate.generate_hints()
         os.system('cls')
         print_hints()
@@ -47,6 +54,7 @@ def print_hints():
         crossword = json.load(file)
     for key, value in crossword.items():
         print(key, ' : ', value)
+    print()
 
 def main():
     main_screen()
