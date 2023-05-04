@@ -15,7 +15,7 @@ def generate_words():
             break
         except ValueError:
             ...
-
+    print("Generating Words...")
     with open("api_key.txt") as file:
         file_content = file.readline()
         api_key = file_content
@@ -51,7 +51,7 @@ def generate_hints():
         api_key = file_content
 
     openai.api_key = api_key
-
+    print("Generating Hints...")
 
     with open("crossword.json") as file:
         
