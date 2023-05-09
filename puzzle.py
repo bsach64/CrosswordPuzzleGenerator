@@ -14,14 +14,31 @@ def main():
     print(board)
 
 def make(words):
+    SIZE = 25
     max_words = len(words)
-    board = [[None for i in range(25)] for j in range(25)]
+    board = [[None for i in range(SIZE)] for j in range(SIZE)]
     words = sorted(words, key=len, reverse=True)
     placed_words = []
+    
+    # Placing the first word
     first_word = words.pop(0)
     placed_words.append(first_word)
     start_index = 13 - (len(first_word) // 2)
     place(first_word, board, Placement(row=13, column=start_index, direction="h"))
+    count = 1
+
+    while count < max_words and len(words) > 0:
+        current_word = words.pop(0)
+        for character in current_word:
+            for i in range(SIZE):
+                for j in range(SIZE):
+                    if character == board[i][j]:
+                        location, ok = can_place()
+                        if ok:
+                            place()
+                            count += 1
+
+
     return board
 
 
@@ -38,7 +55,7 @@ def place(word, board, placement):
             board[placement.row + shift][placement.column] = character
 
 def can_place():
-    ...
+    return True
 
 
 class Placement:
