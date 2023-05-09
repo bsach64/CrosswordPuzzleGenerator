@@ -11,7 +11,7 @@ def main():
 def generate_words():
     while True:
         try:
-            n = int(input("Number of words to generate: "))
+            n = int(input("Number of words to generate (three or more): "))
             break
         except ValueError:
             ...
@@ -22,27 +22,33 @@ def generate_words():
 
     openai.api_key = api_key
 
-    words = {}
+    prompt = f"generate {n} words for a crossword puzzle."
 
-    for i in range(n):
-        prompt = f"generate one word"
+    response = openai.Completion.create(
+        model="text-davinci-003",
+        prompt=prompt,
+        temperature=0.6,
+        max_tokens=400,
+        top_p=1.0,
+        frequency_penalty=0.0,
+        presence_penalty=0.0
+    )
 
-        response = openai.Completion.create(
-            model="text-davinci-003",
-            prompt=prompt,
-            temperature=0.6,
-            max_tokens=100,
-            top_p=1.0,
-            frequency_penalty=0.0,
-            presence_penalty=0.0
-        )
+    raw_answer = str(response["choices"][0]["text"])
+    raw_answer = raw_answer.replace('\n','')
+    raw_answer = raw_answer.replace('.','')    
+    numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+    for number in numbers:
+        if str(number) in raw_answer:
+            raw_answer = raw_answer.replace(str(number), '')
+    words = raw_answer.strip().split(" ")
 
-        raw_answer = str(response["choices"][0]["text"])
-        raw_answer = raw_answer.replace('\n','')
-        words[raw_answer] = ""
+    crossword = {}
+    for word in words:
+        crossword[word.lower()] = ""
 
     with open("crossword.json", "w") as file:
-        json.dump(words, file)
+        json.dump(crossword, file)
 
 
 def generate_hints():
