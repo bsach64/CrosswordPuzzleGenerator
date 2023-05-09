@@ -6,7 +6,8 @@ def main():
     if ok:
         print(location.row, location.column, location.direction)
         board = place("two", board, location)
-        print(board)
+        for i in board:
+            print(i)
     else:
         print("Not")
 
@@ -26,42 +27,42 @@ def place(word, board, placement):
     else:
         return None
         
-
-    
 def can_place(current_word, board, row, column):
     flag_row = 1
     flag_column = 1
     position = current_word.find(board[row][column])
-    print(position)
     if position != -1:
         first_half = current_word[:position]
         second_half = current_word[position:]
-        '''
-        print(first_half, second_half)
         for i in range(1, len(first_half) + 1):
             if board[row - i][column] == None:
                 flag_row *= 1
             else:
-                flag_row *= 0
+                flag_row = 0
+                break 
         for i in range(1, len(second_half) + 1):
             if board[row + i][column] == None:
                 flag_row *= 1
             else:
-                flag_row *= 0
+                flag_row = 0
+                break
         if flag_row == 1:
-            return [Placement(row=(row - len(first_half)), column=column, direction="h"), True]'''
+            return [Placement(row=(row - len(first_half)), column=column, direction="v"), True]
+
         for i in range(1, len(first_half) + 1):
             if board[row][column - i] == None:
                 flag_column *= 1
             else:
-                flag_column *= 0
+                flag_column = 0
+                break
         for i in range(1, len(second_half) + 1):
-            if board[row + i][column] == None:
+            if board[row][column + i] == None:
                 flag_column *= 1
             else:
-                flag_column *= 0
+                flag_column = 0
+                break 
         if flag_column == 1:
-            return [Placement(row=row, column=(column - len(first_half)), direction="v"), True]
+            return [Placement(row=row, column=(column- len(first_half)), direction="h"), True]
     else:
         return [None, False]
     return [None, False]

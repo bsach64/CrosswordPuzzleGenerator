@@ -50,7 +50,6 @@ def generate_words():
     with open("crossword.json", "w") as file:
         json.dump(crossword, file)
 
-
 def generate_hints():
     with open("api_key.txt") as file:
         file_content = file.readline()
