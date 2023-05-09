@@ -1,69 +1,43 @@
-import json
-
-
-SIZE = 25
-
 def main():
-    words = []
-
-    with open("crossword.json") as file: 
-        crossword = {}
-        crossword = json.load(file)
-        for word in crossword:
-            words.append(word)
-
-    board = make(words)
-    print(board)
-
-def make(words):
-    max_words = len(words)
+    SIZE = 25
     board = [[None for i in range(SIZE)] for j in range(SIZE)]
-    words = sorted(words, key=len, reverse=True)
-    
-    # Placing the first word
-    first_word = words.pop(0)
-    start_index = 13 - (len(first_word) // 2)
-    place(first_word, board, Placement(row=13, column=start_index, direction="h"))
-    count = 1
-
-    while count < max_words and len(words) > 0:
-        current_word = words.pop(0)
-        print(current_word)
-        for character in current_word:
-            for i in range(SIZE):
-                for j in range(SIZE):
-                    if character == board[i][j]:
-                        location, ok = can_place(current_word, board, i, j)
-                        if location != None:
-                            print(ok, location.row, location.column, location.direction, current_word)
-                        if ok:
-                            place(current_word, board, location)
-                            count += 1
-
-
-    return board
-
+    place("one", board, Placement(row=13, column=(13 - (len("one") // 2)), direction="h"))
+    location, ok = can_place("two", board, 13, 12)
+    if ok:
+        print(location.row, location.column, location.direction)
+        board = place("two", board, location)
+        print(board)
+    else:
+        print("Not")
 
 def place(word, board, placement):
     if placement.direction == "h":
         shift = 0
         for character in word:
             board[placement.row][placement.column + shift] = character
-            print(shift)
             shift += 1
+        return board
     elif placement.direction == "v":
         shift = 0
         for character in word:
             board[placement.row + shift][placement.column] = character            
             shift += 1
+        return board
+    else:
+        return None
+        
 
+    
 def can_place(current_word, board, row, column):
     flag_row = 1
     flag_column = 1
     position = current_word.find(board[row][column])
+    print(position)
     if position != -1:
         first_half = current_word[:position]
         second_half = current_word[position:]
+        '''
+        print(first_half, second_half)
         for i in range(1, len(first_half) + 1):
             if board[row - i][column] == None:
                 flag_row *= 1
@@ -75,8 +49,7 @@ def can_place(current_word, board, row, column):
             else:
                 flag_row *= 0
         if flag_row == 1:
-            return [Placement(row=(row - len(first_half)), column=column, direction="h"), True]
-
+            return [Placement(row=(row - len(first_half)), column=column, direction="h"), True]'''
         for i in range(1, len(first_half) + 1):
             if board[row][column - i] == None:
                 flag_column *= 1
@@ -109,5 +82,4 @@ class Placement:
             raise ValueError("Invalid Direction")
         self._direction = direction
 
-if __name__ == "__main__":
-    main()
+main()
