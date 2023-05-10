@@ -1,7 +1,8 @@
 import json
 
 
-SIZE = 25
+SIZE = 30
+MID = SIZE // 2
 
 def main():
     words = []
@@ -27,21 +28,23 @@ def make(words):
     place(first_word, board, Placement(row=13, column=start_index, direction="h"))
     count = 1
 
-    #while count < max_words and len(words) > 0:
-        #current_word = words.pop(0)
-    for k in range(1, len(words)):
-        for character in words[k]:
-            for i in range(SIZE):
-                for j in range(SIZE):
-                    if character == board[i][j]:
-                        location, ok = can_place(words[k], board, i, j)
-                        if location != None:    
-                            if ok:
-                                board = place(words[k], board, location)
-                                count += 1
-
+    while count < max_words and len(words) > 0:
+        current_word = words.pop(0)
+        temp = find(current_word, board)
+        if temp != None:
+            board = temp
 
     return board
+
+
+def find(word, board):
+    for letter in word:
+        for j in range(SIZE):
+            for k in range(SIZE):
+                if letter == board[j][k]:
+                    location, ok = can_place(word, board, j, k)
+                    if ok:
+                        return place(word, board, location)
 
 
 def place(word, board, placement):
@@ -50,17 +53,16 @@ def place(word, board, placement):
         for character in word:
             board[placement.row][placement.column + shift] = character
             shift += 1
-            return board
+        return board
     elif placement.direction == "v":
         shift = 0
         for character in word:
             board[placement.row + shift][placement.column] = character            
             shift += 1
-            return board
+        return board
     else:
         return None
-
-
+        
 def can_place(current_word, board, row, column):
     flag_row = 1
     flag_column = 1
@@ -100,8 +102,6 @@ def can_place(current_word, board, row, column):
     else:
         return [None, False]
     return [None, False]
-
-
 
 class Placement:
     def __init__(self, row, column, direction):
