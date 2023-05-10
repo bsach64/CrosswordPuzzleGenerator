@@ -1,15 +1,49 @@
+SIZE = 40
+MID = SIZE // 2
+
 def main():
-    SIZE = 25
-    board = [[None for i in range(SIZE)] for j in range(SIZE)]
+    '''board = [[None for i in range(SIZE)] for j in range(SIZE)]
     place("one", board, Placement(row=13, column=(13 - (len("one") // 2)), direction="h"))
     location, ok = can_place("two", board, 13, 12)
     if ok:
         print(location.row, location.column, location.direction)
         board = place("two", board, location)
+        print(board[11][12])
+        l, o = can_place("three", board, 11, 12)
+        if o:
+            board = place("three", board, l)
+        f, ow = can_place("there", board, 11, 15)
+        if ow:
+            board = place("there", board, f)
         for i in board:
             print(i)
+
     else:
-        print("Not")
+        print("Not")'''
+
+    cross = [[None for i in range(SIZE)] for j in range(SIZE)]
+    words = ["feline", "joyous","scrub", "exodus", "pecan", "stereo","ravine", "jester", "whisky", "squab", "algae","jungle","garble", "jubilee"]
+    cross = place(words[0], cross, Placement(row=MID, column=(MID - (len(words[0]) // 2)), direction="h"))
+    for i in range(1, (len(words))):
+        temp = find(words[i], cross)
+        if temp != None:
+            cross = temp
+        else:
+            print("no")
+
+    for line in cross:
+        print(line)
+
+
+def find(word, board):
+    for letter in word:
+        for j in range(SIZE):
+            for k in range(SIZE):
+                if letter == board[j][k]:
+                    location, ok = can_place(word, board, j, k)
+                    if ok:
+                        return place(word, board, location)
+
 
 def place(word, board, placement):
     if placement.direction == "h":

@@ -13,7 +13,8 @@ def main():
             words.append(word)
 
     board = make(words)
-    print(board)
+    for line in board:
+        print(line)
 
 def make(words):
     max_words = len(words)
@@ -26,18 +27,18 @@ def make(words):
     place(first_word, board, Placement(row=13, column=start_index, direction="h"))
     count = 1
 
-    while count < max_words and len(words) > 0:
-        current_word = words.pop(0)
-        for character in current_word:
+    #while count < max_words and len(words) > 0:
+        #current_word = words.pop(0)
+    for k in range(1, len(words)):
+        for character in words[k]:
             for i in range(SIZE):
                 for j in range(SIZE):
                     if character == board[i][j]:
-                        location, ok = can_place(current_word, board, i, j)
-                        if location != None:
-                            ...
-                        if ok:
-                            place(current_word, board, location)
-                            count += 1
+                        location, ok = can_place(words[k], board, i, j)
+                        if location != None:    
+                            if ok:
+                                board = place(words[k], board, location)
+                                count += 1
 
 
     return board
