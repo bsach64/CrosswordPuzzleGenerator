@@ -11,7 +11,7 @@ def main():
         crossword = {}
         crossword = json.load(file)
         for word in crossword:
-            words.append(word)
+            words.append('0'+word+'0')
 
     board = make(words)
     for line in board:
@@ -19,13 +19,13 @@ def main():
 
 def make(words):
     max_words = len(words)
-    board = [[None for i in range(SIZE)] for j in range(SIZE)]
+    board = [[' ' for i in range(SIZE)] for j in range(SIZE)]
     words = sorted(words, key=len, reverse=True)
     
     # Placing the first word
     first_word = words.pop(0)
     start_index = 13 - (len(first_word) // 2)
-    place(first_word, board, Placement(row=13, column=start_index, direction="h"))
+    place('0' + first_word + '0', board, Placement(row=13, column=start_index, direction="h"))
     count = 1
 
     while count < max_words and len(words) > 0:
@@ -38,7 +38,7 @@ def make(words):
 
 
 def find(word, board):
-    for letter in word:
+    for letter in word[1:len(word)-1]:
         for j in range(SIZE):
             for k in range(SIZE):
                 if letter == board[j][k]:
@@ -72,14 +72,14 @@ def can_place(current_word, board, row, column):
     if position != -1:
         first_half = current_word[:position]
         second_half = current_word[position:]
-        for i in range(1, len(first_half) + 1):
-            if board[row - i][column] == None:
+        for i in range(1, len(first_half) + 2):
+            if board[row - i][column] == ' ':
                 flag_row_first *= 1
             else:
                 flag_row_first = 0
                 break 
-        for i in range(1, len(second_half) + 1):
-            if board[row + i][column] == None:
+        for i in range(1, len(second_half) + 2):
+            if board[row + i][column] == ' ':
                 flag_row_two *= 1
             else:
                 flag_row_two = 0
@@ -87,18 +87,18 @@ def can_place(current_word, board, row, column):
         if flag_row_first == 1 and flag_row_two == 1:
             return [Placement(row=(row - len(first_half)), column=column, direction="v"), True]
 
-        for i in range(1, len(first_half) + 1):
-            if board[row][column - i] == None:
+        for i in range(1, len(first_half) + 2):
+            if board[row][column - i] == ' ':
                 flag_column_first *= 1
             else:
                 flag_column_two = 0
                 break
-        for i in range(1, len(second_half) + 1):
-            if board[row][column + i] == None:
+        for i in range(1, len(second_half) + 2):
+            if board[row][column + i] == ' ':
                 flag_column_first *= 1
             else:
                 flag_column_two = 0
-                break 
+                break
         if flag_column_first == 1 and flag_column_two == 1:
             return [Placement(row=row, column=(column- len(first_half)), direction="h"), True]
     else:
