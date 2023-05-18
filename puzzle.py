@@ -64,40 +64,42 @@ def place(word, board, placement):
         return None
         
 def can_place(current_word, board, row, column):
-    flag_row = 1
-    flag_column = 1
+    flag_row_first = 1
+    flag_row_two = 1
+    flag_column_first = 1
+    flag_column_two = 1
     position = current_word.find(board[row][column])
     if position != -1:
         first_half = current_word[:position]
         second_half = current_word[position:]
         for i in range(1, len(first_half) + 1):
             if board[row - i][column] == None:
-                flag_row *= 1
+                flag_row_first *= 1
             else:
-                flag_row = 0
+                flag_row_first = 0
                 break 
         for i in range(1, len(second_half) + 1):
             if board[row + i][column] == None:
-                flag_row *= 1
+                flag_row_two *= 1
             else:
-                flag_row = 0
+                flag_row_two = 0
                 break
-        if flag_row == 1:
+        if flag_row_first == 1 and flag_row_two == 1:
             return [Placement(row=(row - len(first_half)), column=column, direction="v"), True]
 
         for i in range(1, len(first_half) + 1):
             if board[row][column - i] == None:
-                flag_column *= 1
+                flag_column_first *= 1
             else:
-                flag_column = 0
+                flag_column_two = 0
                 break
         for i in range(1, len(second_half) + 1):
             if board[row][column + i] == None:
-                flag_column *= 1
+                flag_column_first *= 1
             else:
-                flag_column = 0
+                flag_column_two = 0
                 break 
-        if flag_column == 1:
+        if flag_column_first == 1 and flag_column_two == 1:
             return [Placement(row=row, column=(column- len(first_half)), direction="h"), True]
     else:
         return [None, False]
