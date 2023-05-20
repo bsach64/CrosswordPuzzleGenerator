@@ -17,6 +17,9 @@ def main():
     for line in board:
         print(line)
 
+    #creats a png image
+    image(board)
+
 def make(words):
     max_words = len(words)
     board = [[' ' for i in range(SIZE)] for j in range(SIZE)]
@@ -25,7 +28,7 @@ def make(words):
     # Placing the first word
     first_word = words.pop(0)
     start_index = 13 - (len(first_word) // 2)
-    place('0' + first_word + '0', board, Placement(row=13, column=start_index, direction="h"))
+    place(first_word , board, Placement(row=13, column=start_index, direction="h"))
     count = 1
 
     while count < max_words and len(words) > 0:
@@ -121,5 +124,21 @@ class Placement:
             raise ValueError("Invalid Direction")
         self._direction = direction
 
+def image(board):
+    from PIL import Image
+    import numpy as np
+    mat=[]
+    for line in board:
+        l=[]
+        for e in line :
+            if e==' ' or e=='0':
+                l.append([0,0,0])
+            else:
+                l.append([255,255,255])
+        mat.append(l)
+    mat=np.array(mat, dtype='uint8')
+    img = Image.fromarray(mat)
+    img.show()
+    img.save('grid.png')
 if __name__ == "__main__":
     main()
