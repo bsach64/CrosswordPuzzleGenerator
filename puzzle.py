@@ -1,5 +1,5 @@
 import json
-
+import copy
 
 SIZE = 30
 MID = SIZE // 2
@@ -14,11 +14,12 @@ def main():
             words.append('0'+word+'0')
 
     board = make(words)
-    for line in board:
-        print(line)
 
     #creats a png image
-    image(board)
+    board = reduce(board)
+
+    for line in board:
+        print(line)
 
 def make(words):
     max_words = len(words)
@@ -48,7 +49,6 @@ def find(word, board):
                     location, ok = can_place(word, board, j, k)
                     if ok:
                         return place(word, board, location)
-
 
 def place(word, board, placement):
     if placement.direction == "h":
@@ -140,5 +140,46 @@ def image(board):
     img = Image.fromarray(mat)
     img.show()
     img.save('grid.png')
+
+def reduce(board):
+    empty_rows = []
+    for i in range(SIZE):
+        empty_row = 1
+        for j in range(SIZE):
+            if board[i][j] == ' ':
+                empty_row *= 1
+            else:
+                empty_row = 0
+                break
+        if empty_row == 1:
+            empty_rows.append(i)
+            
+    filled_rows = []
+    for i in range(SIZE):
+        if i not in empty_rows:
+            filled_rows.append(board[i])
+    
+    cols = []
+    for i in range(SIZE):
+        temp = 1
+        for j in range(len(filled_rows)):
+            if filled_rows[j][i] == ' ':
+                temp *= 1
+            else:
+                temp = 0
+                break
+        if temp == 1:
+            cols.append(i)
+
+    final = []
+    for row in filled_rows:
+        temp = []
+        for j in range(len(row)):
+            if j not in cols:
+                temp.append(row[j])
+        final.append(temp)
+
+    return final
+
 if __name__ == "__main__":
     main()
