@@ -17,9 +17,10 @@ def main():
 
     #creats a png image
     board = reduce(board)
-
+    image(board)
     for line in board:
         print(line)
+    
 
 def make(words):
     max_words = len(words)
@@ -127,15 +128,30 @@ class Placement:
 def image(board):
     from PIL import Image
     import numpy as np
+    white=[255,255,255]
+    gray=[180,180,180]
+    black=[0,0,0]
     mat=[]
-    for line in board:
+    for i in range(len(board)):
         l=[]
-        for e in line :
-            if e==' ' or e=='0':
-                l.append([0,0,0])
-            else:
-                l.append([255,255,255])
-        mat.append(l)
+        if i%2==0:
+            for j in range(len(board[i])):
+                if j%2==0:
+                    l.append(gray)
+                else:
+                    l.append(white)
+            mat.append(l)
+        else:
+            for j in range(len(board[i])):
+                if j%2!=0:
+                    l.append(gray)
+                else:
+                    l.append(white)
+            mat.append(l)
+    for i in range (len(board)):
+        for j in range(len(board[i])):
+            if board[i][j]==' ' or board[i][j]==0:
+                mat[i][j]=black              
     mat=np.array(mat, dtype='uint8')
     img = Image.fromarray(mat)
     img.show()
