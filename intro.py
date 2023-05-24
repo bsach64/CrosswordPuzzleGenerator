@@ -5,7 +5,6 @@ import os
 
 
 def main_screen():
-    # os.system("cls")
     print("""
     Welcome to Cross_Word_Generator
 
@@ -31,7 +30,6 @@ def main_screen():
     choice = input("Do you want move further with the words and generate hints? (y/n)")
     if choice == "y" or choice == "Y":
         generate.generate_hints()
-        os.system('cls')
         print_hints()
 
 
