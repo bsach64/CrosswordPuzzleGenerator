@@ -1,7 +1,7 @@
 import json
 import copy
 
-SIZE = 30
+SIZE = 100
 MID = SIZE // 2
 
 def main():
@@ -17,7 +17,7 @@ def main():
 
     #creats a png image
     board = reduce(board)
-    image(board)
+    save(board)
     for line in board:
         print(line)
     
@@ -125,37 +125,53 @@ class Placement:
             raise ValueError("Invalid Direction")
         self._direction = direction
 
-def image(board):
-    from PIL import Image
-    import numpy as np
-    white=[255,255,255]
-    gray=[180,180,180]
-    black=[0,0,0]
-    mat=[]
+def save(board):
+    """
+    Save crossword assignment to an image file.
+    """
+    from PIL import Image, ImageDraw, ImageFont
+    cell_size = 100
+    cell_border = 2
+    interior_size = cell_size - 2 * cell_border
     for i in range(len(board)):
-        l=[]
-        if i%2==0:
-            for j in range(len(board[i])):
-                if j%2==0:
-                    l.append(gray)
-                else:
-                    l.append(white)
-            mat.append(l)
-        else:
-            for j in range(len(board[i])):
-                if j%2!=0:
-                    l.append(gray)
-                else:
-                    l.append(white)
-            mat.append(l)
-    for i in range (len(board)):
         for j in range(len(board[i])):
-            if board[i][j]==' ' or board[i][j]==0:
-                mat[i][j]=black              
-    mat=np.array(mat, dtype='uint8')
-    img = Image.fromarray(mat)
+            if board[i][j]==' ' or board[i][j]=='0':
+                board[i][j]=None
+
+    for line in board:
+        print(line)
+    letters=copy.deepcopy(board)
+    # Create a blank canvas
+    img = Image.new(
+        "RGBA",
+        (len(board[1]) * cell_size,
+            len(board) * cell_size),
+        "black"
+    )
+    font = ImageFont.truetype(r"crossword\assets\fonts\OpenSans-Regular.ttf",120)
+    draw = ImageDraw.Draw(img)
+
+    for i in range(len(letters)):
+        for j in range(len(letters[i])):
+
+            rect = [
+                (j * cell_size + cell_border,
+                    i * cell_size + cell_border),
+                ((j + 1) * cell_size - cell_border,
+                    (i + 1) * cell_size - cell_border)
+            ]
+            if letters[i][j]:
+                draw.rectangle(rect, fill="white")
+                if letters[i][j]:
+                    w, h = draw.textsize(letters[i][j], font=font)
+                    draw.text(
+                        (rect[0][0] + ((interior_size - w) / 2),
+                        rect[0][1] + ((interior_size - h) / 2) - 10),
+                        letters[i][j], fill="black"
+                    )
     img.show()
-    img.save('grid.png')
+    print(img.size)
+    img.save('masti.png')
 
 def reduce(board):
     empty_rows = []
