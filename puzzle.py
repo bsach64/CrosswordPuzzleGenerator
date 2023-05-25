@@ -11,7 +11,7 @@ def main():
         crossword = {}
         crossword = json.load(file)
         for word in crossword:
-            words.append('0'+word+'0')
+            words.append(word)
 
     board = make(words)
 
@@ -26,7 +26,6 @@ def main():
 def make(words):
     max_words = len(words)
     board = [[' ' for i in range(SIZE)] for j in range(SIZE)]
-    words = sorted(words, key=len, reverse=True)
     
     # Placing the first word
     first_word = words.pop(0)
@@ -68,48 +67,6 @@ def place(word, board, placement):
     else:
         return None
         
-def can_place(current_word, board, row, column):
-    flag_row_first = 1
-    flag_row_two = 1
-    flag_column_first = 1
-    flag_column_two = 1
-    position = current_word.find(board[row][column])
-    if position != -1:
-        first_half = current_word[:position]
-        second_half = current_word[position:]
-        for i in range(1, len(first_half) + 2):
-            if board[row - i][column] == ' ':
-                flag_row_first *= 1
-            else:
-                flag_row_first = 0
-                break 
-        for i in range(1, len(second_half) + 2):
-            if board[row + i][column] == ' ':
-                flag_row_two *= 1
-            else:
-                flag_row_two = 0
-                break
-        if flag_row_first == 1 and flag_row_two == 1:
-            return [Placement(row=(row - len(first_half)), column=column, direction="v"), True]
-
-        for i in range(1, len(first_half) + 2):
-            if board[row][column - i] == ' ':
-                flag_column_first *= 1
-            else:
-                flag_column_two = 0
-                break
-        for i in range(1, len(second_half) + 2):
-            if board[row][column + i] == ' ':
-                flag_column_first *= 1
-            else:
-                flag_column_two = 0
-                break
-        if flag_column_first == 1 and flag_column_two == 1:
-            return [Placement(row=row, column=(column- len(first_half)), direction="h"), True]
-    else:
-        return [None, False]
-    return [None, False]
-
 class Placement:
     def __init__(self, row, column, direction):
         self.row = row
@@ -166,6 +123,56 @@ def reduce(board):
         final.append(temp)
 
     return final
+
+
+def can_place(current_word, board, row, column):
+    position = current_word.find(board[row][column])
+    flag_vertical = 1
+    flag_horizontal = 1
+    if position != -1:
+        first_half = current_word[:position]
+        second_half = current_word[(position + 1):]
+        for i in range(1, (len(first_half) + 2)):
+            for j in range(-1, 2):               
+                if board[row - i][column + j] == ' ':
+                    flag_vertical *= 1
+                else:
+                    flag_vertical = 0
+                    break
+        for i in range(1, (len(second_half) + 2)):
+            for j in range(-1, 2):
+                if board[row + i][column + j] == ' ':
+                    flag_vertical *= 1
+                else:
+                    flag_vertical = 0
+                    break
+        if flag_vertical == 1:
+            return [Placement(row=(row - len(first_half)), column=column, direction="v"), True]
+        
+        for j in range(1, (len(first_half) + 2)):
+            for i in range(-1, 2):
+                if board[row + i][column - j] == ' ':
+                    flag_horizontal *= 1
+                else:
+                    flag_horizontal = 0
+                    break
+        for j in range(1, (len(second_half) + 2)):
+            for i in range(-1, 2):
+                if board[row + i][column + j] == ' ':
+                    flag_horizontal *= 1
+                else:
+                    flag_horizontal = 0
+                    break
+        
+        if flag_horizontal == 1:
+            return [Placement(row=row, column=(column - len(first_half)), direction="h"), True]
+    else:
+        return [None, False]
+    return [None, False]
+
+
+
+
 
 if __name__ == "__main__":
     main()
