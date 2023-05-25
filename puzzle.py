@@ -1,5 +1,7 @@
 import json
 from grid import image_save
+import copy
+
 
 SIZE = 100
 MID = SIZE // 2
@@ -27,14 +29,15 @@ def make(words):
     max_words = len(words)
     board = [[' ' for i in range(SIZE)] for j in range(SIZE)]
     
+    word_list = copy.deepcopy(words)
     # Placing the first word
-    first_word = words.pop(0)
+    first_word = word_list.pop(0)
     start_index = 13 - (len(first_word) // 2)
     place(first_word , board, Placement(row=13, column=start_index, direction="h"))
     count = 1
 
-    while count < max_words and len(words) > 0:
-        current_word = words.pop(0)
+    while count < max_words and len(word_list) > 0:
+        current_word = word_list.pop(0)
         temp = find(current_word, board)
         if temp != None:
             board = temp
@@ -60,10 +63,13 @@ def place(word, board, placement):
         return board
     elif placement.direction == "v":
         shift = 0
-        for character in word:
-            board[placement.row + shift][placement.column] = character            
-            shift += 1
-        return board
+        try:
+            for character in word:
+                board[placement.row + shift][placement.column] = character            
+                shift += 1
+            return board
+        except IndexError:
+            return None
     else:
         return None
         
@@ -134,35 +140,47 @@ def can_place(current_word, board, row, column):
         second_half = current_word[(position + 1):]
         for i in range(1, (len(first_half) + 2)):
             for j in range(-1, 2):               
-                if board[row - i][column + j] == ' ':
-                    flag_vertical *= 1
-                else:
+                try:
+                    if board[row - i][column + j] == ' ':
+                        flag_vertical *= 1
+                    else:
+                        flag_vertical = 0
+                        break
+                except IndexError:
                     flag_vertical = 0
-                    break
         for i in range(1, (len(second_half) + 2)):
             for j in range(-1, 2):
-                if board[row + i][column + j] == ' ':
-                    flag_vertical *= 1
-                else:
+                try:
+                    if board[row + i][column + j] == ' ':
+                        flag_vertical *= 1
+                    else:
+                        flag_vertical = 0
+                        break
+                except IndexError:
                     flag_vertical = 0
-                    break
         if flag_vertical == 1:
             return [Placement(row=(row - len(first_half)), column=column, direction="v"), True]
         
         for j in range(1, (len(first_half) + 2)):
             for i in range(-1, 2):
-                if board[row + i][column - j] == ' ':
-                    flag_horizontal *= 1
-                else:
+                try:
+                    if board[row + i][column - j] == ' ':
+                        flag_horizontal *= 1
+                    else:
+                        flag_horizontal = 0
+                        break
+                except IndexError:
                     flag_horizontal = 0
-                    break
         for j in range(1, (len(second_half) + 2)):
             for i in range(-1, 2):
-                if board[row + i][column + j] == ' ':
-                    flag_horizontal *= 1
-                else:
+                try:
+                    if board[row + i][column + j] == ' ':
+                        flag_horizontal *= 1
+                    else:
+                        flag_horizontal = 0
+                        break
+                except IndexError:
                     flag_horizontal = 0
-                    break
         
         if flag_horizontal == 1:
             return [Placement(row=row, column=(column - len(first_half)), direction="h"), True]
