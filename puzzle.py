@@ -15,12 +15,14 @@ def main():
         for word in crossword:
             words.append(word)
 
-    board = make(words)
+    board, placed_words = make(words)
 
     #creats a png image
-    board = reduce(board)
     for line in board:
         print(line)
+
+    print(placed_words)
+
     image_save(board)
 
     
@@ -28,7 +30,7 @@ def main():
 def make(words):
     max_words = len(words)
     board = [[' ' for i in range(SIZE)] for j in range(SIZE)]
-    
+    placed_words = []
     word_list = copy.deepcopy(words)
     # Placing the first word
     first_word = word_list.pop(0)
@@ -40,9 +42,12 @@ def make(words):
         current_word = word_list.pop(0)
         temp = find(current_word, board)
         if temp != None:
+            placed_words.append(current_word)
             board = temp
 
-    return board
+    board = reduce(board)
+    
+    return board, placed_words
 
 
 def find(word, board):
