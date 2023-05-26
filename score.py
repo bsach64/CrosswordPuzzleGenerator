@@ -1,4 +1,4 @@
-def score(placed_words, board):
+def score(board, placed_words):
     number_of_words = len(placed_words)
     rows = len(board)
     columns = len(board[0])
@@ -7,8 +7,8 @@ def score(placed_words, board):
         size_ratio = columns / rows
     filled = 0
     empty = 0
-    for i in rows:
-        for j in columns:
+    for i in range(rows):
+        for j in range(columns):
             if board[i][j] == ' ':
                 empty += 1
             else:
