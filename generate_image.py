@@ -1,6 +1,6 @@
 import copy
      
-def image_save(board):
+def empty_crossword(board):
     """
     Save crossword assignment to an image file.
     """
@@ -34,13 +34,6 @@ def image_save(board):
             ]
             if letters[i][j]:
                 draw.rectangle(rect, fill="white")
-                if letters[i][j]:
-                    w, h = draw.textsize(letters[i][j], font=font)
-                    draw.text(
-                        (rect[0][0] + ((interior_size - w) / 2),
-                        rect[0][1] + ((interior_size - h) / 2) - 10),
-                        letters[i][j], fill="black"
-                    )
     img.show()
     print(img.size)
     img.save('crossword.png')

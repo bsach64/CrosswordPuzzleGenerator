@@ -3,8 +3,7 @@ import generate
 from words import input_words, get_words
 import os
 from best import best_board
-from generate_image import image_save
-import json
+from generate_image import empty_crossword
 
 def main_screen():
     print("""
@@ -39,7 +38,7 @@ def main_screen():
         for line in crossword:
             print(line)
         print(placed_words)
-        image_save(crossword)
+        empty_crossword(crossword)
     else:
         main_screen()
 
