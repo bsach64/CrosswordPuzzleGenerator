@@ -1,31 +1,7 @@
-import json
-from grid import image_save
 import copy
-
 
 SIZE = 100
 MID = SIZE // 2
-
-def main():
-    words = []
-
-    with open("crossword.json") as file: 
-        crossword = {}
-        crossword = json.load(file)
-        for word in crossword:
-            words.append(word)
-
-    board, placed_words = make(words)
-
-    #creats a png image
-    for line in board:
-        print(line)
-
-    print(placed_words)
-
-    image_save(board)
-
-    
 
 def make(words):
     max_words = len(words)
@@ -192,10 +168,3 @@ def can_place(current_word, board, row, column):
     else:
         return [None, False]
     return [None, False]
-
-
-
-
-
-if __name__ == "__main__":
-    main()

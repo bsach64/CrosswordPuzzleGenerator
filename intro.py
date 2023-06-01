@@ -2,7 +2,9 @@ import json
 import generate
 import words
 import os
-
+from best import best_board
+from grid import image_save, get_words
+import json
 
 def main_screen():
     print("""
@@ -31,11 +33,13 @@ def main_screen():
     if choice == "y" or choice == "Y":
         generate.generate_hints()
         print_hints()
-
-
-        #generate_grid()
-
-
+        words = get_words("crossword.json")
+        print("Generating Crossword...")
+        crossword, placed_words = best_board(words, 1000)
+        for line in crossword:
+            print(line)
+        print(placed_words)
+        image_save(crossword)
     else:
         main_screen()
 

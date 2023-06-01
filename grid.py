@@ -1,4 +1,16 @@
 import copy
+import json 
+
+
+def get_words(filename):
+    words = []
+    with open(filename) as file:
+        crossword = {}
+        crossword = json.load(file)
+        for word in crossword:
+            words.append(word)  
+    return words
+
     
 def image_save(board):
     """
@@ -14,7 +26,6 @@ def image_save(board):
                 board[i][j]=None
     
     letters=copy.deepcopy(board)
-    # Create a blank canvas
     img = Image.new(
         "RGBA",
         (len(board[1]) * cell_size,
