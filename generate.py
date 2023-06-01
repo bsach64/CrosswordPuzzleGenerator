@@ -3,11 +3,6 @@
 import openai
 import json
 
-
-def main():
-    generate_words()
-    generate_hints()
-
 def generate_words():
     while True:
         try:
@@ -83,6 +78,3 @@ def generate_hints():
 
     with open("crossword.json", "w") as file:
         json.dump(crossword, file)
-
-if __name__ == "__main__":
-    main()

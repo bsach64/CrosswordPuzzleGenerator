@@ -1,8 +1,5 @@
 import json
 
-def main():
-    input_words()
-
 def input_words():
     words = input("Enter the list of words separated by spaces: ")
     words = words.split(" ")
@@ -15,5 +12,11 @@ def input_words():
     with open("crossword.json", "w") as file:
         json.dump(crossword, file)
 
-if __name__ == "__main__":
-    main()
+def get_words(filename):
+    words = []
+    with open(filename) as file:
+        crossword = {}
+        crossword = json.load(file)
+        for word in crossword:
+            words.append(word)  
+    return words

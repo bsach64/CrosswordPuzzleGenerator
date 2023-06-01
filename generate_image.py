@@ -1,17 +1,5 @@
 import copy
-import json 
-
-
-def get_words(filename):
-    words = []
-    with open(filename) as file:
-        crossword = {}
-        crossword = json.load(file)
-        for word in crossword:
-            words.append(word)  
-    return words
-
-    
+     
 def image_save(board):
     """
     Save crossword assignment to an image file.

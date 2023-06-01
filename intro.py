@@ -1,9 +1,9 @@
 import json
 import generate
-import words
+from words import input_words, get_words
 import os
 from best import best_board
-from grid import image_save, get_words
+from generate_image import image_save
 import json
 
 def main_screen():
@@ -27,7 +27,7 @@ def main_screen():
     if choice == 1:
         generate.generate_words()
     elif choice == 2:
-        words.input_words()
+        input_words()
     print_words()
     choice = input("Do you want move further with the words and generate hints? (y/n)")
     if choice == "y" or choice == "Y":

@@ -1,6 +1,5 @@
 import random 
-from puzzle import make
-from score import score
+from puzzle import make, score
 
 def best_board(words, iterations):
     max_score = 0
