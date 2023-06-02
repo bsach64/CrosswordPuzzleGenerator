@@ -3,6 +3,12 @@ import copy
 SIZE = 100
 MID = SIZE // 2
 
+class Crossword:
+    def __init__(self):
+        self.board = [[' ' for i in range(SIZE)] for j in range(SIZE)]
+        self.words = []
+        self.start_location = []
+
 def make(words):
     max_words = len(words)
     board = [[' ' for i in range(SIZE)] for j in range(SIZE)]
@@ -10,8 +16,8 @@ def make(words):
     word_list = copy.deepcopy(words)
     # Placing the first word
     first_word = word_list.pop(0)
-    start_index = 13 - (len(first_word) // 2)
-    place(first_word , board, Placement(row=13, column=start_index, direction="h"))
+    start_index = MID - (len(first_word) // 2)
+    place(first_word , board, Placement(row=MID, column=start_index, direction="h"))
     count = 1
 
     while count < max_words and len(word_list) > 0:
@@ -27,7 +33,7 @@ def make(words):
 
 
 def find(word, board):
-    for letter in word[1:len(word)-1]:
+    for letter in word:
         for j in range(SIZE):
             for k in range(SIZE):
                 if letter == board[j][k]:
