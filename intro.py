@@ -12,12 +12,13 @@ def main_screen():
 
         1> Prompt words through OpenAI
         2> Input words manually
+        3> Use existing data
 
         """)
     while True:
         try:
             choice =int(input("\tEnter your choice: "))
-            if choice > 2 or choice < 0:
+            if choice > 3 or choice < 0:
                 print("\tNot in Range")
             else:
                 break
@@ -27,6 +28,22 @@ def main_screen():
         generate.generate_words()
     elif choice == 2:
         input_words()
+
+
+#--------------temp code------------------------------
+
+    elif choice == 3:
+        words = get_words("crossword.json")
+        print("Generating Crossword...")
+        crossword, placed_words = best_board(words, 1000)
+        for line in crossword:
+            print(line)
+        print(placed_words)
+        empty_crossword(crossword)
+
+#---------------temp code---------------------------
+
+
     print_words()
     choice = input("Do you want move further with the words and generate hints? (y/n)")
     if choice == "y" or choice == "Y":
