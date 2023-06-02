@@ -3,7 +3,7 @@ import generate
 from words import input_words, get_words
 import os
 from best import best_board
-from generate_image import empty_crossword
+from generate_image import *
 
 def main_screen():
     print("""
@@ -40,7 +40,7 @@ def main_screen():
             print(line)
         print(placed_words)
         empty_crossword(crossword)
-
+        filled_crossword(crossword)
 #---------------temp code---------------------------
 
 
@@ -56,6 +56,7 @@ def main_screen():
             print(line)
         print(placed_words)
         empty_crossword(crossword)
+        filled_crossword(crossword)
     else:
         main_screen()
 
