@@ -1,52 +1,39 @@
-import json
-from grid import image_save
 import copy
-
 
 SIZE = 100
 MID = SIZE // 2
 
-def main():
-    words = []
-
-    with open("crossword.json") as file: 
-        crossword = {}
-        crossword = json.load(file)
-        for word in crossword:
-            words.append(word)
-
-    board = make(words)
-
-    #creats a png image
-    board = reduce(board)
-    for line in board:
-        print(line)
-    image_save(board)
-
-    
+class Crossword:
+    def __init__(self):
+        self.board = [[' ' for i in range(SIZE)] for j in range(SIZE)]
+        self.words = []
+        self.start_location = []
 
 def make(words):
     max_words = len(words)
     board = [[' ' for i in range(SIZE)] for j in range(SIZE)]
-    
+    placed_words = []
     word_list = copy.deepcopy(words)
     # Placing the first word
     first_word = word_list.pop(0)
-    start_index = 13 - (len(first_word) // 2)
-    place(first_word , board, Placement(row=13, column=start_index, direction="h"))
+    start_index = MID - (len(first_word) // 2)
+    place(first_word , board, Placement(row=MID, column=start_index, direction="h"))
     count = 1
 
     while count < max_words and len(word_list) > 0:
         current_word = word_list.pop(0)
         temp = find(current_word, board)
         if temp != None:
+            placed_words.append(current_word)
             board = temp
 
-    return board
+    board = reduce(board)
+    
+    return board, placed_words
 
 
 def find(word, board):
-    for letter in word[1:len(word)-1]:
+    for letter in word:
         for j in range(SIZE):
             for k in range(SIZE):
                 if letter == board[j][k]:
@@ -188,9 +175,21 @@ def can_place(current_word, board, row, column):
         return [None, False]
     return [None, False]
 
+def score(board, placed_words):
+    number_of_words = len(placed_words)
+    rows = len(board)
+    columns = len(board[0])
+    size_ratio = rows / columns
+    if rows > columns:
+        size_ratio = columns / rows
+    filled = 0
+    empty = 0
+    for i in range(rows):
+        for j in range(columns):
+            if board[i][j] == ' ':
+                empty += 1
+            else:
+                filled += 1
+    filled_ratio = filled / empty
+    return ((number_of_words * 40) + (size_ratio * 10) + (filled_ratio * 20))
 
-
-
-
-if __name__ == "__main__":
-    main()
