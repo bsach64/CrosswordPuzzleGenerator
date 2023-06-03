@@ -1,16 +1,15 @@
 import random 
-from puzzle import make, score
+from puzzle import *
 
 def best_board(words, iterations):
     max_score = 0
     for _ in range(iterations):
         random.shuffle(words)
-        board, placed_words = make(words)
-        board_score = score(board, placed_words)
-        if board_score > max_score:
-            max_score = board_score
-            final_words = placed_words
-            result = board
+        crossword = make(words)
+        crossword_score = crossword.score()
+        if crossword_score > max_score:
+            max_score = crossword_score
+            result = crossword
     
-    return result, final_words
+    return crossword
 

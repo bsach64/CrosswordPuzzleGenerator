@@ -6,59 +6,73 @@ MID = SIZE // 2
 class Crossword:
     def __init__(self):
         self.board = [[' ' for i in range(SIZE)] for j in range(SIZE)]
-        self.words = []
-        self.start_location = []
+        self.info = dict()
+
+    def place(self, word, placement):
+        if placement.direction == "h":
+            shift = 0
+            for character in word:
+                self.board[placement.row][placement.column + shift] = character
+                shift += 1
+            self.info[word] = placement
+        elif placement.direction == "v":
+            shift = 0
+            for character in word:
+                self.board[placement.row + shift][placement.column] = character            
+                shift += 1
+            self.info[word] = placement
+
+    def score(self):
+        number_of_words = len(self.info)
+        rows = len(self.board)
+        columns = len(self.board[0])
+        size_ratio = rows / columns
+        if rows > columns:
+            size_ratio = columns / rows
+        filled = 0
+        empty = 0
+        for i in range(rows):
+            for j in range(columns):
+                if self.board[i][j] == ' ':
+                    empty += 1
+                else:
+                    filled += 1
+        filled_ratio = filled / empty
+        return ((number_of_words * 40) + (size_ratio * 10) + (filled_ratio * 20))
+    
+
+    def reduce(self):
+        final_board = copy.deepcopy(self.board)
+        final_board = [row for row in final_board if any(cell != ' ' for cell in row)]
+        transposed_board = list(zip(*final_board))
+        transposed_board = [col for col in transposed_board if any(cell != ' ' for cell in col)]
+        self.board = list(zip(*transposed_board))
+        self.board = [list(row) for row in self.board]
 
 def make(words):
     max_words = len(words)
-    board = [[' ' for i in range(SIZE)] for j in range(SIZE)]
-    placed_words = []
+    crossword = Crossword()
     word_list = copy.deepcopy(words)
-    # Placing the first word
     first_word = word_list.pop(0)
     start_index = MID - (len(first_word) // 2)
-    place(first_word , board, Placement(row=MID, column=start_index, direction="h"))
+    crossword.place(first_word , Placement(row=MID, column=start_index, direction="h"))
     count = 1
 
     while count < max_words and len(word_list) > 0:
         current_word = word_list.pop(0)
-        temp = find(current_word, board)
-        if temp != None:
-            placed_words.append(current_word)
-            board = temp
+        for letter in current_word:
+            for j in range(SIZE):
+                for k in range(SIZE):
+                    if letter == crossword.board[j][k]:
+                        location, ok = can_place(current_word, crossword.board, j, k)
+                        if ok:
+                            if current_word not in crossword.info:
+                                crossword.place(current_word, location)
+                                count += 1
+    crossword.reduce()
+    return crossword
 
-    board = reduce(board)
-    
-    return board, placed_words
 
-
-def find(word, board):
-    for letter in word:
-        for j in range(SIZE):
-            for k in range(SIZE):
-                if letter == board[j][k]:
-                    location, ok = can_place(word, board, j, k)
-                    if ok:
-                        return place(word, board, location)
-
-def place(word, board, placement):
-    if placement.direction == "h":
-        shift = 0
-        for character in word:
-            board[placement.row][placement.column + shift] = character
-            shift += 1
-        return board
-    elif placement.direction == "v":
-        shift = 0
-        try:
-            for character in word:
-                board[placement.row + shift][placement.column] = character            
-                shift += 1
-            return board
-        except IndexError:
-            return None
-    else:
-        return None
         
 class Placement:
     def __init__(self, row, column, direction):
@@ -75,47 +89,6 @@ class Placement:
         if direction not in ["h", "v"]:
             raise ValueError("Invalid Direction")
         self._direction = direction
-
-
-def reduce(board):
-    empty_rows = []
-    for i in range(SIZE):
-        empty_row = 1
-        for j in range(SIZE):
-            if board[i][j] == ' ':
-                empty_row *= 1
-            else:
-                empty_row = 0
-                break
-        if empty_row == 1:
-            empty_rows.append(i)
-            
-    filled_rows = []
-    for i in range(SIZE):
-        if i not in empty_rows:
-            filled_rows.append(board[i])
-    
-    cols = []
-    for i in range(SIZE):
-        temp = 1
-        for j in range(len(filled_rows)):
-            if filled_rows[j][i] == ' ':
-                temp *= 1
-            else:
-                temp = 0
-                break
-        if temp == 1:
-            cols.append(i)
-
-    final = []
-    for row in filled_rows:
-        temp = []
-        for j in range(len(row)):
-            if j not in cols:
-                temp.append(row[j])
-        final.append(temp)
-
-    return final
 
 
 def can_place(current_word, board, row, column):
@@ -175,21 +148,4 @@ def can_place(current_word, board, row, column):
         return [None, False]
     return [None, False]
 
-def score(board, placed_words):
-    number_of_words = len(placed_words)
-    rows = len(board)
-    columns = len(board[0])
-    size_ratio = rows / columns
-    if rows > columns:
-        size_ratio = columns / rows
-    filled = 0
-    empty = 0
-    for i in range(rows):
-        for j in range(columns):
-            if board[i][j] == ' ':
-                empty += 1
-            else:
-                filled += 1
-    filled_ratio = filled / empty
-    return ((number_of_words * 40) + (size_ratio * 10) + (filled_ratio * 20))
 
