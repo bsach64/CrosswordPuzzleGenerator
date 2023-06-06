@@ -1,7 +1,6 @@
 import json
 import generate
 from words import input_words, get_words
-import os
 from best import best_board
 from generate_image import *
 

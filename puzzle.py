@@ -5,7 +5,7 @@ MID = SIZE // 2
 
 class Crossword:
     def __init__(self):
-        self.board = [[' ' for i in range(SIZE)] for j in range(SIZE)]
+        self.board = [[' ' for _ in range(SIZE)] for _ in range(SIZE)]
         self.info = dict()
 
     def place(self, word, placement):
@@ -39,15 +39,25 @@ class Crossword:
                     filled += 1
         filled_ratio = filled / empty
         return ((number_of_words * 40) + (size_ratio * 10) + (filled_ratio * 20))
-    
 
-    def reduce(self):
-        final_board = copy.deepcopy(self.board)
-        final_board = [row for row in final_board if any(cell != ' ' for cell in row)]
-        transposed_board = list(zip(*final_board))
-        transposed_board = [col for col in transposed_board if any(cell != ' ' for cell in col)]
-        self.board = list(zip(*transposed_board))
-        self.board = [list(row) for row in self.board]
+    def create_order(self):
+        common_words = []
+        placed_words = []
+        for word_one in self.info:
+            for word_two in self.info:
+                if word_one != word_two:
+                    if self.info[word_one].row == self.info[word_two].row and self.info[word_one].column == self.info[word_two].column:
+                        common_words.append((word_one, word_two))
+        count = 0
+        for entry in common_words:
+            for word in entry:
+                self.info[word].order = count
+                placed_words.append(word)
+            count += 1
+        for word in self.info:
+            if word not in placed_words:
+                self.info[word].order = count
+                count += 1
 
 def make(words):
     max_words = len(words)
@@ -69,16 +79,16 @@ def make(words):
                             if current_word not in crossword.info:
                                 crossword.place(current_word, location)
                                 count += 1
-    crossword.reduce()
     return crossword
 
 
         
 class Placement:
-    def __init__(self, row, column, direction):
+    def __init__(self, row, column, direction, order=0):
         self.row = row
         self.column = column  
         self.direction = direction
+        self.order = order
 
     @property
     def direction(self):
@@ -148,4 +158,12 @@ def can_place(current_word, board, row, column):
         return [None, False]
     return [None, False]
 
+def reduce(board):
+    final_board = copy.deepcopy(board)
+    final_board = [row for row in final_board if any(cell != ' ' for cell in row)]
+    transposed_board = list(zip(*final_board))
+    transposed_board = [col for col in transposed_board if any(cell != ' ' for cell in col)]
+    return_board = list(zip(*transposed_board))
+    return_board = [list(row) for row in return_board]
+    return return_board
 

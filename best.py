@@ -10,6 +10,6 @@ def best_board(words, iterations):
         if crossword_score > max_score:
             max_score = crossword_score
             result = crossword
-    
-    return crossword
+
+    return result
 
