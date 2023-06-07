@@ -1,7 +1,6 @@
 import json
 import generate
 from words import input_words, get_words
-import os
 from best import best_board
 from generate_image import *
 
@@ -35,10 +34,12 @@ def main_screen():
     elif choice == 3:
         words = get_words("crossword.json")
         print("Generating Crossword...")
-        crossword, placed_words = best_board(words, 1000)
-        for line in crossword:
+        crossword = best_board(words, 100)
+        for line in crossword.board:
             print(line)
-        print(placed_words)
+        for entry in crossword.info:
+            print(entry, end=" ")
+        print()
         empty_crossword(crossword)
         filled_crossword(crossword)
 #---------------temp code---------------------------
@@ -51,10 +52,14 @@ def main_screen():
         print_hints()
         words = get_words("crossword.json")
         print("Generating Crossword...")
-        crossword, placed_words = best_board(words, 1000)
-        for line in crossword:
+        crossword = best_board(words, 1000)
+        for line in crossword.board:
             print(line)
-        print(placed_words)
+        count = 0
+        for entry in crossword.info:
+            print(entry, end=" ")
+            count += 1
+        print(count)
         empty_crossword(crossword)
         filled_crossword(crossword)
     else:
@@ -63,7 +68,6 @@ def main_screen():
 def print_words():
     with open("crossword.json") as file:
         crossword = json.load(file)
-    os.system('cls')
     print("Listed words:")
     for i in crossword:
         print(i)

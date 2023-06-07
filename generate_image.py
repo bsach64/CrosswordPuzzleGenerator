@@ -1,30 +1,22 @@
-import copy
      
-def empty_crossword(board):
+def empty_crossword(crossword):
     """
-    Save crossword assignment to an image file.
+    Save crossword.board assignment to an image file.
     """
     from PIL import Image, ImageDraw, ImageFont
     cell_size = 100
     cell_border = 2
     interior_size = cell_size - 2 * cell_border
-    for i in range(len(board)):
-        for j in range(len(board[i])):
-            if board[i][j]==' ' or board[i][j]=='0':
-                board[i][j]=None
-    
-    letters=copy.deepcopy(board)
     img = Image.new(
         "RGBA",
-        (len(board[1]) * cell_size,
-            len(board) * cell_size),
+        (len(crossword.board[1]) * cell_size,
+            len(crossword.board) * cell_size),
         "black"
     )
-    font = ImageFont.truetype(r"OpenSans-Regular.ttf",120)
+    font = ImageFont.truetype(r"OpenSans-Regular.ttf",30)
     draw = ImageDraw.Draw(img)
-
-    for i in range(len(letters)):
-        for j in range(len(letters[i])):
+    for i in range(len(crossword.board)):
+        for j in range(len(crossword.board[i])):
 
             rect = [
                 (j * cell_size + cell_border,
@@ -32,36 +24,36 @@ def empty_crossword(board):
                 ((j + 1) * cell_size - cell_border,
                     (i + 1) * cell_size - cell_border)
             ]
-            if letters[i][j]:
+            if crossword.board[i][j] != ' ':
                 draw.rectangle(rect, fill="white")
-    img.show()
-    print(img.size)
-    img.save('crossword.png')
+            if len(crossword.board[i][j]) > 1:
+                w, h = draw.textsize(crossword.board[i][j][:-1], font=font)
+                draw.text(
+                        (rect[0][0] + (((interior_size - w) / 2) - 27),
+                        rect[0][1] + ((interior_size - h) / 2) - 35),
+                        crossword.board[i][j][:-1], font = font ,fill="black"
+                    )
+    img.save('crossword_board.png')
 
 
-def filled_crossword(board):
+def filled_crossword(crossword):
     from PIL import Image, ImageDraw, ImageFont
     cell_size = 100
     cell_border = 2
     interior_size = cell_size - 2 * cell_border
-    for i in range(len(board)):
-        for j in range(len(board[i])):
-            if board[i][j]==' ' or board[i][j]=='0':
-                board[i][j]=None
-    
-    letters=copy.deepcopy(board)
     # Create a blank canvas
     img = Image.new(
         "RGBA",
-        (len(board[1]) * cell_size,
-            len(board) * cell_size),
+        (len(crossword.board[1]) * cell_size,
+            len(crossword.board) * cell_size),
         "black"
     )
-    font = ImageFont.truetype(r"OpenSans-Regular.ttf",65)
+    font_small = ImageFont.truetype(r"OpenSans-Regular.ttf",30)
+    font = ImageFont.truetype(r"OpenSans-Regular.ttf",55)
     draw = ImageDraw.Draw(img)
 
-    for i in range(len(letters)):
-        for j in range(len(letters[i])):
+    for i in range(len(crossword.board)):
+        for j in range(len(crossword.board[i])):
 
             rect = [
                 (j * cell_size + cell_border,
@@ -69,15 +61,30 @@ def filled_crossword(board):
                 ((j + 1) * cell_size - cell_border,
                     (i + 1) * cell_size - cell_border)
             ]
-            if letters[i][j]:
+            if crossword.board[i][j] != ' ':
                 draw.rectangle(rect, fill="white")
-                if letters[i][j]:
-                    w, h = draw.textsize(letters[i][j], font=font)
+                if len(crossword.board[i][j]) > 1:
+                    w, h = draw.textsize(crossword.board[i][j][:-1], font=font_small)
                     draw.text(
-                        (rect[0][0] + ((interior_size - w) / 2),
-                        rect[0][1] + ((interior_size - h) / 2) - 10),
-                        letters[i][j], font = font ,fill="black"
+                            (rect[0][0] + (((interior_size - w) / 2) - 27),
+                            rect[0][1] + ((interior_size - h) / 2) - 35),
+                            crossword.board[i][j][:-1], font = font_small ,fill="black"
+                        )
+                if len(crossword.board[i][j]) == 1:
+                    w, h = draw.textsize(crossword.board[i][j].upper(), font=font)
+                    draw.text(
+                        (rect[0][0] + (((interior_size - w) / 2)),
+                        rect[0][1] + ((interior_size - h) / 2)),
+                        crossword.board[i][j].upper(), font = font ,fill="black"
+                    )
+                else:
+                    w, h = draw.textsize(crossword.board[i][j][-1:].upper(), font=font)
+                    draw.text(
+                        (rect[0][0] + (((interior_size - w) / 2)),
+                        rect[0][1] + ((interior_size - h) / 2)),
+                        crossword.board[i][j][-1:].upper(), font = font ,fill="black"
                     )
     img.show()
     print(img.size)
     img.save('filled_crossword.png')
+    
