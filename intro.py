@@ -62,6 +62,20 @@ def main_screen():
         print(count)
         empty_crossword(crossword)
         filled_crossword(crossword)
+        with open("crossword.json") as file:
+            hints = {}
+            hints = json.load(file)
+        with open("hints.txt", "w") as file:
+            file.write("Across Words")
+            for word in crossword.info:
+                if crossword.info[word].direction == "h":
+                    line = str(crossword.info[word].order) + ". " + hints[word] + "\n"
+                    file.write(line)
+            file.write("Down Words")
+            for word in crossword.info:
+                if crossword.info[word].direction == "v":
+                    line = str(crossword.info[word].order) + ". " + hints[word] + "\n"
+                    file.write(line)
     else:
         main_screen()
 
