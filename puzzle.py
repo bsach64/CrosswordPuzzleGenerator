@@ -52,11 +52,13 @@ class Crossword:
         for entry in common_words:
             for word in entry:
                 self.info[word].order = count
+                self.board[self.info[word].row][self.info[word].column] = str(count) + self.board[self.info[word].row][self.info[word].column]
                 placed_words.append(word)
             count += 1
         for word in self.info:
             if word not in placed_words:
                 self.info[word].order = count
+                self.board[self.info[word].row][self.info[word].column] = str(count) + self.board[self.info[word].row][self.info[word].column]
                 count += 1
 
 def make(words):
