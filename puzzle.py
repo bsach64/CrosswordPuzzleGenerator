@@ -48,7 +48,7 @@ class Crossword:
                 if word_one != word_two:
                     if self.info[word_one].row == self.info[word_two].row and self.info[word_one].column == self.info[word_two].column:
                         common_words.append((word_one, word_two))
-        count = 0
+        count = 1
         for entry in common_words:
             for word in entry:
                 self.info[word].order = count
@@ -60,6 +60,15 @@ class Crossword:
                 self.info[word].order = count
                 self.board[self.info[word].row][self.info[word].column] = str(count) + self.board[self.info[word].row][self.info[word].column]
                 count += 1
+
+    def reduce(self):
+        final_board = copy.deepcopy(self.board)
+        final_board = [row for row in final_board if any(cell != ' ' for cell in row)]
+        transposed_board = list(zip(*final_board))
+        transposed_board = [col for col in transposed_board if any(cell != ' ' for cell in col)]
+        return_board = list(zip(*transposed_board))
+        return_board = [list(row) for row in return_board]
+        self.board = return_board
 
 def make(words):
     max_words = len(words)
@@ -81,10 +90,10 @@ def make(words):
                             if current_word not in crossword.info:
                                 crossword.place(current_word, location)
                                 count += 1
+    crossword.create_order()
+    crossword.reduce()
     return crossword
 
-
-        
 class Placement:
     def __init__(self, row, column, direction, order=0):
         self.row = row
@@ -101,7 +110,6 @@ class Placement:
         if direction not in ["h", "v"]:
             raise ValueError("Invalid Direction")
         self._direction = direction
-
 
 def can_place(current_word, board, row, column):
     position = current_word.find(board[row][column])
@@ -159,13 +167,3 @@ def can_place(current_word, board, row, column):
     else:
         return [None, False]
     return [None, False]
-
-def reduce(board):
-    final_board = copy.deepcopy(board)
-    final_board = [row for row in final_board if any(cell != ' ' for cell in row)]
-    transposed_board = list(zip(*final_board))
-    transposed_board = [col for col in transposed_board if any(cell != ' ' for cell in col)]
-    return_board = list(zip(*transposed_board))
-    return_board = [list(row) for row in return_board]
-    return return_board
-
