@@ -41,25 +41,26 @@ class Crossword:
         return ((number_of_words * 40) + (size_ratio * 10) + (filled_ratio * 20))
 
     def create_order(self):
-        common_words = []
-        placed_words = []
-        for word_one in self.info:
-            for word_two in self.info:
+        placed_order = 1
+        all_words = list(self.info.keys())
+        for word_one in all_words:
+            for word_two in all_words:
                 if word_one != word_two:
                     if self.info[word_one].row == self.info[word_two].row and self.info[word_one].column == self.info[word_two].column:
-                        common_words.append((word_one, word_two))
-        count = 1
-        for entry in common_words:
-            for word in entry:
-                self.info[word].order = count
-                self.board[self.info[word].row][self.info[word].column] = str(count) + self.board[self.info[word].row][self.info[word].column]
-                placed_words.append(word)
-            count += 1
+                        self.info[word_one].order = placed_order
+                        self.info[word_two].order = placed_order
+                        all_words.remove(word_one)
+                        all_words.remove(word_two)
+                        placed_order += 1
+        
+        for word in all_words:
+            self.info[word].order = placed_order
+            placed_order += 1
+
+    def append_order(self):
         for word in self.info:
-            if word not in placed_words:
-                self.info[word].order = count
-                self.board[self.info[word].row][self.info[word].column] = str(count) + self.board[self.info[word].row][self.info[word].column]
-                count += 1
+            if len(self.board[self.info[word].row][self.info[word].column]) < 2:
+                self.board[self.info[word].row][self.info[word].column] = str(self.info[word].order) + self.board[self.info[word].row][self.info[word].column]
 
     def reduce(self):
         final_board = copy.deepcopy(self.board)
@@ -90,7 +91,9 @@ def make(words):
                             if current_word not in crossword.info:
                                 crossword.place(current_word, location)
                                 count += 1
+    
     crossword.create_order()
+    crossword.append_order()
     crossword.reduce()
     return crossword
 

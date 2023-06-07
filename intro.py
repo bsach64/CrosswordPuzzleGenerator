@@ -34,7 +34,7 @@ def main_screen():
     elif choice == 3:
         words = get_words("crossword.json")
         print("Generating Crossword...")
-        crossword = best_board(words, 1000)
+        crossword = best_board(words, 100)
         for line in crossword.board:
             print(line)
         for entry in crossword.info:
