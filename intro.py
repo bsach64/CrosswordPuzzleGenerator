@@ -34,7 +34,7 @@ def main_screen():
     elif choice == 3:
         words = get_words("crossword.json")
         print("Generating Crossword...")
-        crossword = best_board(words, 100)
+        crossword = best_board(words, 10)
         for line in crossword.board:
             print(line)
         for entry in crossword.info:
@@ -42,13 +42,14 @@ def main_screen():
         print()
         empty_crossword(crossword)
         filled_crossword(crossword)
+        pdf_creater()
 #---------------temp code---------------------------
 
 
     print_words()
     choice = input("Do you want move further with the words and generate hints? (y/n)")
     if choice == "y" or choice == "Y":
-        generate.generate_hints()
+        #generate.generate_hints()
         print_hints()
         words = get_words("crossword.json")
         print("Generating Crossword...")
@@ -76,6 +77,7 @@ def main_screen():
                 if crossword.info[word].direction == "v":
                     line = str(crossword.info[word].order) + ". " + hints[word] + "\n"
                     file.write(line)
+        pdf_creater()
     else:
         main_screen()
 

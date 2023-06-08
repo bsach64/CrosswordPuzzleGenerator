@@ -1,8 +1,4 @@
-     
 def empty_crossword(crossword):
-    """
-    Save crossword.board assignment to an image file.
-    """
     from PIL import Image, ImageDraw, ImageFont
     cell_size = 100
     cell_border = 2
@@ -33,6 +29,8 @@ def empty_crossword(crossword):
                         rect[0][1] + ((interior_size - h) / 2) - 35),
                         crossword.board[i][j][:-1], font = font ,fill="black"
                     )
+    img = img.resize((530,530), Image.LANCZOS)
+    img.show()
     img.save('crossword_board.png')
 
 
@@ -84,7 +82,34 @@ def filled_crossword(crossword):
                         rect[0][1] + ((interior_size - h) / 2)),
                         crossword.board[i][j][-1:].upper(), font = font ,fill="black"
                     )
+    img = img.resize((530,530), Image.LANCZOS)
     img.show()
     print(img.size)
     img.save('filled_crossword.png')
     
+
+def pdf_creater():
+    from fpdf import FPDF
+    file=open("hints.txt", "r+")
+    file.readline()
+    print(file)
+    f= FPDF()
+    f.add_page()
+    f.set_font('Arial',size=30)
+    f.text(60,20,txt='Crossword Puzzle')
+    f.image('crossword_board.png',12,30)
+    f.add_page()
+    y=20
+    f.set_font('Arial',size=12)
+    for i in file:
+        i=str(i)
+        print(i)
+        if i=='Across\n' or i == "Down\n":
+            f.set_font('Arial',size=25)
+            f.text(10,y,txt=i)
+        else:
+            f.set_font('Arial',size=12)
+            f.text(10,y,txt=i)
+        y+=15
+
+    f.output('crossword_pdf.pdf')
