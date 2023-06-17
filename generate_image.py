@@ -88,7 +88,6 @@ def filled_crossword(crossword):
                         rect[0][1] + ((interior_size - h) / 2)),
                         crossword.board[i][j][-1:].upper(), font = font ,fill="black"
                     )
-
     print("filled image generated")
     print(img.size)
     img.save('filled_crossword.png')
@@ -100,10 +99,10 @@ def pdf_creater():
     file.readline()
     print(file)
     f= FPDF()
-    f.add_page()
+    '''f.add_page()
     f.set_font('Arial',size=30)
     f.text(60,20,txt='Crossword Puzzle')
-    f.image('crossword_board.png',0,30)
+    f.image('crossword_board.png',0,30)'''
     f.add_page()
     y=20
     f.set_font('Arial',size=12)
@@ -111,11 +110,23 @@ def pdf_creater():
         i=str(i)
         print(i)
         if i=='Across\n' or i == "Down\n":
-            f.set_font('Arial',size=25)
+            f.set_font('Arial',size=30)
             f.text(10,y,txt=i)
         else:
-            f.set_font('Arial',size=12)
+            f.set_font('Arial',size=15)
             f.text(10,y,txt=i)
         y+=15
-
     f.output('crossword_pdf.pdf')
+
+def pdf2img():
+    import fitz
+    pdffile = "crossword_pdf.pdf"
+    doc = fitz.open(pdffile)
+    page = doc.load_page(0)  # number of page
+    pix = page.get_pixmap()
+    output = "hints.png"
+    pix.save(output)
+    pix.save("static/hints.png")
+    doc.close()
+
+
