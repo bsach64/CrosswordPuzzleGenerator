@@ -3,10 +3,10 @@
 import openai
 import json
 
-def generate_words():
+def generate_words(n):
     while True:
         try:
-            n = int(input("Number of words to generate (three or more): "))
+            #n = int(input("Number of words to generate (three or more): "))
             break
         except ValueError:
             ...

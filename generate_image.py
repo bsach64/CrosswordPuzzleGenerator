@@ -1,5 +1,8 @@
+from fpdf import FPDF
+from PIL import Image, ImageDraw, ImageFont
+
+
 def empty_crossword(crossword):
-    from PIL import Image, ImageDraw, ImageFont
     cell_size = 100
     cell_border = 2
     interior_size = cell_size - 2 * cell_border
@@ -29,13 +32,16 @@ def empty_crossword(crossword):
                         rect[0][1] + ((interior_size - h) / 2) - 35),
                         crossword.board[i][j][:-1], font = font ,fill="black"
                     )
-    img = img.resize((530,530), Image.LANCZOS)
-    img.show()
+    #img = img.resize((595,530), Image.LANCZOS)
+    width = img.size[0]
+    height = img.size[1]
+    scale_factor = 595/img.size[0]
+    img = img.resize((int(width * scale_factor),int(height * scale_factor)), Image.LANCZOS)
+    print("image empty generated")
     img.save('crossword_board.png')
-
+    img.save('./static/crossword_board.png')
 
 def filled_crossword(crossword):
-    from PIL import Image, ImageDraw, ImageFont
     cell_size = 100
     cell_border = 2
     interior_size = cell_size - 2 * cell_border
@@ -82,14 +88,14 @@ def filled_crossword(crossword):
                         rect[0][1] + ((interior_size - h) / 2)),
                         crossword.board[i][j][-1:].upper(), font = font ,fill="black"
                     )
-    img = img.resize((530,530), Image.LANCZOS)
-    img.show()
+
+    print("filled image generated")
     print(img.size)
     img.save('filled_crossword.png')
+    img.save('./static/filled_crossword.png')
     
-
 def pdf_creater():
-    from fpdf import FPDF
+    img=Image.open("./crossword_board.png")
     file=open("hints.txt", "r+")
     file.readline()
     print(file)
@@ -97,7 +103,7 @@ def pdf_creater():
     f.add_page()
     f.set_font('Arial',size=30)
     f.text(60,20,txt='Crossword Puzzle')
-    f.image('crossword_board.png',12,30)
+    f.image('crossword_board.png',0,30)
     f.add_page()
     y=20
     f.set_font('Arial',size=12)
