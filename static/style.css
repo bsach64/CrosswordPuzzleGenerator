@@ -23,7 +23,7 @@ body {
 }
 
 .image{
-  width: 450px;
+
   border-color: black;
 
 }
@@ -253,7 +253,8 @@ body {
   vertical-align: middle;
   white-space: nowrap;
   margin-top: 25px;
-  margin-left: 0px;
+  margin-left: 5%;
+  min-width: 90%;
 }
 
 .button-3:focus:not(:focus-visible):not(.focus-visible) {

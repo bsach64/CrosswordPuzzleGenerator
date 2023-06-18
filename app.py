@@ -1,11 +1,12 @@
 from flask import Flask,request,render_template
 from intro import * 
+
 def mains(n):
     generate.generate_words(n)
     generate.generate_hints()
     words = get_words("crossword.json")
     print("Generating Crossword...")
-    crossword = best_board(words, 1000)
+    crossword = best_board(words, 100)
     empty_crossword(crossword)
     filled_crossword(crossword)
     with open("crossword.json") as file:
@@ -43,4 +44,4 @@ def puzzle():
 def filled():
     return render_template("filled.html")
 
-app.run(debug=True)
+app.run(debug=True, host='0.0.0.0', port=4444)
