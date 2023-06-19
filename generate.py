@@ -4,12 +4,6 @@ import openai
 import json
 
 def generate_words(n):
-    while True:
-        try:
-            #n = int(input("Number of words to generate (three or more): "))
-            break
-        except ValueError:
-            ...
     print("Generating Words...")
     with open("api_key.txt") as file:
         file_content = file.readline()

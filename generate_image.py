@@ -32,11 +32,6 @@ def empty_crossword(crossword):
                         rect[0][1] + ((interior_size - h) / 2) - 35),
                         crossword.board[i][j][:-1], font = font ,fill="black"
                     )
-    #img = img.resize((595,530), Image.LANCZOS)
-    width = img.size[0]
-    height = img.size[1]
-    scale_factor = 595/img.size[0]
-    img = img.resize((int(width * scale_factor),int(height * scale_factor)), Image.LANCZOS)
     print("image empty generated")
     img.save('crossword_board.png')
     img.save('./static/crossword_board.png')

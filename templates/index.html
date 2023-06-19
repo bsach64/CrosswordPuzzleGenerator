@@ -1,20 +1,45 @@
-<!DOCTYPE html>
-<html lang="en" >
-<head>
-  <meta name = "viewport"  charset="UTF-8">
-  <title>crossword</title>
-  <link rel="stylesheet" href="/static/style.css">
-</head>
-<body>
+{% extends "layout.html" %}
 
-<div class="wrapper">
-	  <h1>Crossword Puzzle Generator</h1>
-	  <p></p>
-<form action="/puzzle" method="post">
-	<div class="btn-groups">
-	<input class="textbox" autofocus name="name" placeholder="Number of maximum words" type="text"><br>
-	<button class="btn-green-tr" type="submit" >Generate Crossword</button>
-	</div>
-</form>
-</body>
-</html>
+{% block title %}
+    Crossword Generator
+{% endblock %}
+
+{% block main %}
+    <h1>Crossword Puzzle Generator</h1>
+    <form action="/puzzle" method="post">
+        <select id="options" name="options" onchange="show()">
+            <option value="" disabled selected>Select an option</option>
+            <option value="random">Give me a Crossword</option>
+            <option value="number">Give Number of Words</option>
+        </select>
+        <br>
+        <br>
+        <div id="get_number" class="textbox">
+            <input type="text" name="given_number" placeholder="Enter a Number">
+            <br>
+            <br>
+        </div>
+        <button type="submit" onclick="display_confirmation()">Generate</button>
+        <div id="generating" class="textbox">
+            <br>
+            Generating...
+        </div>
+
+        <script>
+            function show() {
+                var selected_option = document.getElementById("options")
+                var text_box = document.getElementById("get_number")
+
+                if (selected_option.value === "number") {
+                    text_box.style.display = "block";
+                } else {
+                    text_box.style.display = "none";
+                }
+            }
+            function display_confirmation() {
+                var confirmation = document.getElementById("generating");
+                confirmation.style.display = "block";
+            }
+        </script>
+    </form>
+{% endblock %}

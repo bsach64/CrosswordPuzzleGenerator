@@ -1,16 +1,14 @@
-<!DOCTYPE html>
-<html lang="en" >
-<head>
-    <meta name = "viewport" charset="UTF-8">
-    <title>crossword</title>
-    <link rel="stylesheet" href="/static/style.css">
+{% extends "layout.html" %}
 
-</head>
-<body>
-    <h1 class="h1">Crossword Puzzle</h1>
-    <section class="container">
-        <div class="img1">
-        <img src="/static/filled_crossword.png" class="image1" alt="off" >
+{% block title %}
+    Solution
+{% endblock %}
+
+{% block main %}
+    <h1>Solution</h1>
+    <div class="container">
+        <div class="filled">
+            <img src="/static/filled_crossword.png">
         </div>
-</body>
-</html>
+    </div>
+{% endblock %}

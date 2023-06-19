@@ -1,21 +1,23 @@
-<!DOCTYPE html>
-<html lang="en" >
-<head>
-    <meta name = "viewport" charset="UTF-8">
-    <title>crossword</title>
-    <link rel="stylesheet" href="/static/style.css">
+{% extends "layout.html" %}
 
-</head>
-<body>
-    <h1 class="h1">Crossword Puzzle</h1>
-    <section class="container">
-        <div class="image">
-        <img src="/static/crossword_board.png" class="image" alt="off">
-        <form action="/filled"><button class="button-3">Answers</button></form>
+{% block title %}
+    Puzzle
+{% endblock %}
+
+{% block main %}
+    <h1>Solve!</h1>
+    <div class="unsolved">
+        <div class="empty">
+            <img src="/static/crossword_board.png">
+        </div>
+        <div class="hints">
+            <ul style="list-style-type: none;">
+                {% for entry in hints %}
+                    <li>{{ entry }}</li>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
-    <div class="dox">
-        <img src="/static/hints.png" class="image2" alt="off">
-    </div>
-    </section><br>
-    </body>
-</html>
+    <br>
+    <a href="/filled"><button>See Solution</button></a>
+{% endblock %}
