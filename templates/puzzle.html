@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Puzzle
+{% endblock %}
+
+{% block main %}
+    <h1>Solve!</h1>
+    <div class="unsolved">
+        <div class="empty">
+            <img src="/static/crossword_board.png">
+        </div>
+        <div class="hints">
+            <ul style="list-style-type: none;">
+                {% for entry in hints %}
+                    <li>{{ entry }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <br>
+    <a href="/filled"><button>See Solution</button></a>
+{% endblock %}

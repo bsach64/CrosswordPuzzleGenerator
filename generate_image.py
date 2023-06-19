@@ -1,9 +1,8 @@
-     
+from fpdf import FPDF
+from PIL import Image, ImageDraw, ImageFont
+
+
 def empty_crossword(crossword):
-    """
-    Save crossword.board assignment to an image file.
-    """
-    from PIL import Image, ImageDraw, ImageFont
     cell_size = 100
     cell_border = 2
     interior_size = cell_size - 2 * cell_border
@@ -33,15 +32,13 @@ def empty_crossword(crossword):
                         rect[0][1] + ((interior_size - h) / 2) - 35),
                         crossword.board[i][j][:-1], font = font ,fill="black"
                     )
-    img.save('crossword_board.png')
-
+    print("image empty generated")
+    img.save('./static/crossword_board.png')
 
 def filled_crossword(crossword):
-    from PIL import Image, ImageDraw, ImageFont
     cell_size = 100
     cell_border = 2
     interior_size = cell_size - 2 * cell_border
-    # Create a blank canvas
     img = Image.new(
         "RGBA",
         (len(crossword.board[1]) * cell_size,
@@ -84,7 +81,7 @@ def filled_crossword(crossword):
                         rect[0][1] + ((interior_size - h) / 2)),
                         crossword.board[i][j][-1:].upper(), font = font ,fill="black"
                     )
-    img.show()
+    print("filled image generated")
     print(img.size)
-    img.save('filled_crossword.png')
-    
+    img.save('./static/filled_crossword.png')
+

@@ -3,13 +3,7 @@
 import openai
 import json
 
-def generate_words():
-    while True:
-        try:
-            n = int(input("Number of words to generate (three or more): "))
-            break
-        except ValueError:
-            ...
+def generate_words(n):
     print("Generating Words...")
     with open("api_key.txt") as file:
         file_content = file.readline()
