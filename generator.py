@@ -11,7 +11,7 @@ def maker(number):
     generate_hints()
     print("Generating Crossword...")
     words = get_words("crossword.json")
-    crossword = best_board(words, 100)
+    crossword = best_board(words, 500)
     for line in crossword.board:
         print(line)
     empty_crossword(crossword)
@@ -24,7 +24,6 @@ def maker(number):
     for word in crossword.info:
         if crossword.info[word].direction == "h":
             solve.append(str(crossword.info[word].order) + ". " + hints[word])
-    solve.append("\n")
     solve.append("DOWN")
     for word in crossword.info:
         if crossword.info[word].direction == "v":
