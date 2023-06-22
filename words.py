@@ -1,9 +1,6 @@
 import json
 
-def input_words():
-    words = input("Enter the list of words separated by spaces: ")
-    words = words.split(" ")
-
+def input_words(words):
     crossword = {}
 
     for word in words:

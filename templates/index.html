@@ -7,15 +7,21 @@
 {% block main %}
     <h1>Crossword Puzzle Generator</h1>
     <form action="/puzzle" method="post">
-        <select id="options" name="options" onchange="show()">
+        <select id="options" name="options" onchange="show(), show_word_entry()">
             <option value="" disabled selected>Select an option</option>
             <option value="random">Give me a Crossword</option>
             <option value="number">Give Number of Words</option>
+            <option value="words">Give List of Words</option>
         </select>
         <br>
         <br>
         <div id="get_number" class="textbox">
             <input type="text" name="given_number" placeholder="Enter a Number">
+            <br>
+            <br>
+        </div>
+        <div id="get_words" class="textbox">
+            <input type="text" name="given_words" placeholder="Enter Words">
             <br>
             <br>
         </div>
@@ -39,6 +45,16 @@
             function display_confirmation() {
                 var confirmation = document.getElementById("generating");
                 confirmation.style.display = "block";
+            }
+            function show_word_entry() {
+                var selected_option = document.getElementById("options")
+                var text_box = document.getElementById("get_words")
+
+                if (selected_option.value === "words") {
+                    text_box.style.display = "block";
+                } else {
+                    text_box.style.display = "none";
+                }
             }
         </script>
     </form>
