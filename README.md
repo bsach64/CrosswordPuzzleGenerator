@@ -5,8 +5,7 @@ This project uses ChatGPT 3.5's API to generate words and hints (words can also 
 1. Clone the Repository
 `git clone https://github.com/bsach64/CrosswordPuzzleGenerator`
 2. `cd CrosswordPuzzleGenerator`
-3. OPENAI API Key
-Create a file called `api_key.txt` and paste your API key on the first line.
+3. Create a file called `api_key.txt` and paste your OPENAI API key on the first line.
 4. Run `pip install -r requirements.txt`
 5. Run `python app.py`
 
