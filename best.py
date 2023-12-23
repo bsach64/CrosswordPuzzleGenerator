@@ -1,6 +1,7 @@
-import random 
-from puzzle import *
+import random
+from puzzle import Crossword, make
 import copy
+
 
 def best_board(words, iterations):
     max_score = 0
@@ -14,4 +15,3 @@ def best_board(words, iterations):
             result = copy.deepcopy(crossword)
 
     return result
-
