@@ -23,18 +23,14 @@ def generate_words(n):
         presence_penalty=0.0
     )
 
-    raw_answer = str(response["choices"][0]["text"])
-    raw_answer = raw_answer.replace('\n','')
-    raw_answer = raw_answer.replace('.','')    
-    numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+    raw_answer = str(response["choices"][0]["text"]).replace('\n', '').replace('\n', '')
+    numbers = [str(i) for i in range(10)]
     for number in numbers:
-        if str(number) in raw_answer:
-            raw_answer = raw_answer.replace(str(number), '')
+        if number in raw_answer:
+            raw_answer = raw_answer.replace(number, '')
     words = raw_answer.strip().split(" ")
 
-    crossword = {}
-    for word in words:
-        crossword[word.lower()] = ""
+    crossword = {word.lower():"" for word in words}
 
     with open("crossword.json", "w") as file:
         json.dump(crossword, file)

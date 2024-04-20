@@ -4,11 +4,13 @@ from words import input_words, get_words
 from best import best_board
 from generate_image import *
 
-def maker(number):
+def maker(number: int):
     print("Generating Words...")
     generate_words(number)
+    
     print("Generating Hints...")
     generate_hints()
+    
     print("Generating Crossword...")
     words = get_words("crossword.json")
     crossword = best_board(words, 500)
