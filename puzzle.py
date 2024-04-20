@@ -1,4 +1,5 @@
 import copy
+import random
 
 SIZE = 100
 MID = SIZE // 2
@@ -143,7 +144,7 @@ def can_place(current_word, board, row, column):
                     flag_vertical = 0
         if flag_vertical == 1:
             return [Placement(row=(row - len(first_half)), column=column, direction="v"), True]
-        
+
         for j in range(1, (len(first_half) + 2)):
             for i in range(-1, 2):
                 try:
@@ -164,9 +165,23 @@ def can_place(current_word, board, row, column):
                         break
                 except IndexError:
                     flag_horizontal = 0
-        
+
         if flag_horizontal == 1:
             return [Placement(row=row, column=(column - len(first_half)), direction="h"), True]
     else:
         return [None, False]
     return [None, False]
+
+
+def best_board(words, iterations):
+    max_score = 0
+    for _ in range(iterations):
+        random.shuffle(words)
+        crossword = Crossword()
+        crossword = make(words)
+        crossword_score = crossword.score()
+        if crossword_score > max_score:
+            max_score = crossword_score
+            result = copy.deepcopy(crossword)
+
+    return result

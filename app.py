@@ -1,5 +1,5 @@
 from flask import Flask, request, render_template
-from generator import maker, make_from_words
+from generator import maker
 import random
 
 app = Flask(__name__)
@@ -7,7 +7,6 @@ app = Flask(__name__)
 OPTIONS: list[str] = [
     "random",
     "number",
-    "words"
 ]
 
 @app.route("/")
@@ -31,11 +30,7 @@ def puzzle():
             except ValueError:
                 ...
             hints = maker(n)
-        elif option == "words":
-            words = request.form.get("given_words")
-            hints = make_from_words(words)
         return render_template("puzzle.html", hints=hints)
-    
     return render_template("index.html")
 
 @app.route("/filled", methods=['POST', 'GET'])
@@ -43,4 +38,4 @@ def filled():
     return render_template("filled.html")
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0',port=4444)
+    app.run(host='0.0.0.0',port=8080)

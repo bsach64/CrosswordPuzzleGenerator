@@ -1,12 +1,7 @@
 /__pycache__
+/env
+.env
 crossword.json
-api_key.txt
-test.py
-testcopy.py
-tempCodeRunnerFile.py
 crossword/
 *.png
 *.pdf
-temp.py
-testy.py
-hints.txt

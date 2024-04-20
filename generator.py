@@ -1,61 +1,25 @@
 import json
-from generate import *
-from words import input_words, get_words
-from best import best_board
-from generate_image import *
+from words_hints_req import get_words_hints
+from puzzle import best_board
+from crossword_image import *
+import logging
 
 def maker(number: int):
-    print("Generating Words...")
-    generate_words(number)
-    
-    print("Generating Hints...")
-    generate_hints()
-    
-    print("Generating Crossword...")
-    words = get_words("crossword.json")
+    logging.info("Generating words and hints...")
+    hw: dict = get_words_hints(number)
+
+    logging.info("Generating Crossword...")
+    words: list[str] = list(hw.keys())
     crossword = best_board(words, 500)
-    for line in crossword.board:
-        print(line)
-    empty_crossword(crossword)
-    filled_crossword(crossword)
+    empty_crossword(crossword.board)
+    filled_crossword(crossword.board)
     solve = []
-    with open("crossword.json") as file:
-        hints = {}
-        hints = json.load(file)
     solve.append("ACROSS")
     for word in crossword.info:
         if crossword.info[word].direction == "h":
-            solve.append(str(crossword.info[word].order) + ". " + hints[word])
+            solve.append(str(crossword.info[word].order) + ". " + hw[word])
     solve.append("DOWN")
     for word in crossword.info:
         if crossword.info[word].direction == "v":
-            solve.append(str(crossword.info[word].order) + ". " + hints[word])
+            solve.append(str(crossword.info[word].order) + ". " + hw[word])
     return solve
-
-def make_from_words(words):
-    words = words.split(" ")
-    input_words(words)
-    print("Generating Hints...")
-    generate_hints()
-    print("Generating Crossword...")
-    words = get_words("crossword.json")
-    crossword = best_board(words, 500)
-    for line in crossword.board:
-        print(line)
-    empty_crossword(crossword)
-    filled_crossword(crossword)
-    solve = []
-    with open("crossword.json") as file:
-        hints = {}
-        hints = json.load(file)
-    solve.append("ACROSS")
-    for word in crossword.info:
-        if crossword.info[word].direction == "h":
-            solve.append(str(crossword.info[word].order) + ". " + hints[word])
-    solve.append("DOWN")
-    for word in crossword.info:
-        if crossword.info[word].direction == "v":
-            solve.append(str(crossword.info[word].order) + ". " + hints[word])
-    return solve
-
-                
