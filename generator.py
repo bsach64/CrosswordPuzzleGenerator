@@ -1,4 +1,3 @@
-import json
 from words_hints_req import get_words_hints
 from puzzle import best_board
 from crossword_image import *
@@ -13,13 +12,10 @@ def maker(number: int):
     crossword = best_board(words, 500)
     empty_crossword(crossword.board)
     filled_crossword(crossword.board)
-    solve = []
-    solve.append("ACROSS")
+    sol_across, sol_col = ["ACROSS"], ["DOWN"]
     for word in crossword.info:
         if crossword.info[word].direction == "h":
-            solve.append(str(crossword.info[word].order) + ". " + hw[word])
-    solve.append("DOWN")
-    for word in crossword.info:
-        if crossword.info[word].direction == "v":
-            solve.append(str(crossword.info[word].order) + ". " + hw[word])
-    return solve
+            sol_across.append(f"{crossword.info[word].order}. {hw[word]}")
+        else:
+            sol_col.append(f"{crossword.info[word].order}. {hw[word]}")
+    return sol_across + sol_col
