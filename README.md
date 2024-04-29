@@ -1,13 +1,14 @@
 # Crossword Puzzle Generator
-This project uses ChatGPT 3.5's API to generate words and hints (words can also be given by the user) to generate a crossword puzzle.
+This project uses Google's Gemini API to generate words and hints (words can also be given by the user) to generate a crossword puzzle.
 
 ## How to Run the Project Locally
 1. Clone the Repository
 `git clone https://github.com/bsach64/CrosswordPuzzleGenerator`
 2. `cd CrosswordPuzzleGenerator`
-3. Create a file called `api_key.txt` and paste your OPENAI API key on the first line.
-4. Run `pip install -r requirements.txt`
-5. Run `python app.py`
+3. Create a `.env` file
+4. Create an env variable GOOGLE_API_KEY="PASTE_YOUR_API_KEY"
+5. Run `pip install -r requirements.txt`
+6. Run `python app.py`
 
 ## Demo
 ### Homepage
