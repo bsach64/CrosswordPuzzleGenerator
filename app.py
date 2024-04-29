@@ -9,11 +9,13 @@ OPTIONS: list[str] = [
     "number",
 ]
 
+
 @app.route("/")
 def index():
     return render_template("index.html")
 
-@app.route("/puzzle", methods=['POST', 'GET'])
+
+@app.route("/puzzle", methods=["POST", "GET"])
 def puzzle():
     if request.method == "POST":
         option: str | None = request.form.get("options")
@@ -33,9 +35,11 @@ def puzzle():
         return render_template("puzzle.html", hints=hints)
     return render_template("index.html")
 
-@app.route("/filled", methods=['POST', 'GET'])
+
+@app.route("/filled", methods=["POST", "GET"])
 def filled():
     return render_template("filled.html")
 
+
 if __name__ == "__main__":
-    app.run(host='0.0.0.0',port=8080)
+    app.run(host="0.0.0.0", port=8080)

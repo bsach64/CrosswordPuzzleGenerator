@@ -4,11 +4,12 @@ import google.generativeai as genai
 import os
 import json
 
+
 def get_words_hints(n: int) -> dict:
     load_dotenv()
-    genai.configure(api_key=os.environ['GOOGLE_API_KEY'])
+    genai.configure(api_key=os.environ["GOOGLE_API_KEY"])
 
-    model = genai.GenerativeModel('gemini-pro')
+    model = genai.GenerativeModel("gemini-pro")
 
     logging.info("Generating words and hints...")
     prompt = f"""
@@ -18,4 +19,4 @@ def get_words_hints(n: int) -> dict:
     """
     response = model.generate_content(prompt)
     hw = json.loads(response.text)
-    return {w.lower():hw[w].lower() for w in hw}
+    return {w.lower(): hw[w].lower() for w in hw}

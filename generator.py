@@ -1,7 +1,8 @@
 from words_hints_req import get_words_hints
 from puzzle import best_board
-from crossword_image import *
+from crossword_image import empty_crossword, filled_crossword
 import logging
+
 
 def maker(number: int):
     logging.info("Generating words and hints...")
