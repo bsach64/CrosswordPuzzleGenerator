@@ -1,5 +1,5 @@
 # Crossword Puzzle Generator
-This project uses Google's Gemini API to generate words and hints (words can also be given by the user) to generate a crossword puzzle.
+This project uses Google's Gemini API to generate words and hints to generate a crossword puzzle.
 
 ## How to Run the Project Locally
 1. Clone the Repository
